@@ -10,13 +10,102 @@ body {
     margin: 0;
     background: #030303;
     color: white;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
-                 "SF Pro Text", Arial, sans-serif;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        Arial,
+        sans-serif;
 
     overflow-x: hidden;
 }
 
-/* NAVIGATION */
+* {
+    cursor: none !important;
+}
+/* =========================
+   LOADER
+========================= */
+
+#loader {
+    position: fixed;
+
+    inset: 0;
+
+    background: #030303;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 9999;
+
+    transition: opacity 0.8s ease,
+                visibility 0.8s ease;
+}
+
+#loader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    text-align: center;
+}
+
+.loader-content p {
+    font-size: 22px;
+    letter-spacing: 5px;
+    margin: 0 0 12px;
+}
+
+.loader-content span {
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: #555;
+}
+
+
+/* =========================
+   CURSOR
+========================= */
+
+.cursor {
+    position: fixed;
+
+    width: 10px;
+    height: 10px;
+
+    background: white;
+
+    mix-blend-mode: difference;
+    
+    border: none;
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    z-index: 10000;
+
+    transform: translate(-50%, -50%);
+
+    transition:
+        width 0.2s ease,
+        height 0.2s ease;
+}
+
+.cursor.hover {
+    width: 35px;
+    height: 35px;
+}
+
+
+
+/* =========================
+   NAVIGATION
+========================= */
 
 nav {
     height: 70px;
@@ -27,10 +116,24 @@ nav {
 
     padding: 0 4%;
 
+    background: #030303;
+
     border-bottom: 1px solid #1c1c1c;
 
-    position: relative;
-    z-index: 10;
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+
+    z-index: 100;
+
+    transition: transform 0.4s ease;
+}
+
+nav.hidden {
+    transform: translateY(-100%);
 }
 
 .logo {
@@ -46,7 +149,9 @@ nav {
 
 .links a {
     color: #777;
+
     text-decoration: none;
+
     font-size: 14px;
 
     transition: 0.3s;
@@ -56,59 +161,148 @@ nav {
     color: white;
 }
 
-/* MAIN */
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+.menu-button {
+    display: none;
+
+    background: none;
+
+    border: none;
+
+    color: white;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+.mobile-menu {
+    position: fixed;
+
+    top: 70px;
+
+    left: 0;
+
+    width: 100%;
+
+    background: #030303;
+
+    border-bottom: 1px solid #222;
+
+    display: none;
+
+    flex-direction: column;
+
+    z-index: 99;
+}
+
+.mobile-menu.open {
+    display: flex;
+}
+
+.mobile-menu a {
+    padding: 20px 5%;
+
+    color: #aaa;
+
+    text-decoration: none;
+
+    border-bottom: 1px solid #151515;
+}
+
+
+/* =========================
+   HERO
+========================= */
 
 main {
-    min-height: calc(100vh - 70px);
+    min-height: 100vh;
 
     position: relative;
 
     display: flex;
+
     justify-content: center;
+
     align-items: center;
 
     text-align: center;
 
     overflow: hidden;
+
+    padding-top: 70px;
 }
 
-/* SUBTLE BACKGROUND */
 
-main::before {
-    content: "";
+/* BACKGROUND */
 
+.background-glow {
     position: absolute;
 
     width: 700px;
     height: 700px;
 
-    background: radial-gradient(
-        circle,
-        rgba(255,255,255,0.07),
-        transparent 65%
-    );
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.07),
+            transparent 65%
+        );
 
     filter: blur(30px);
+
+    animation: glowMove 8s ease-in-out infinite alternate;
 
     pointer-events: none;
 }
 
-/* HERO */
+@keyframes glowMove {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.15);
+    }
+
+}
+
+
+/* HERO CONTENT */
 
 .hero {
     position: relative;
+
     z-index: 2;
 
     margin-top: -30px;
+
+    transition: 0.7s ease;
+}
+
+.hero.exit {
+    opacity: 0;
+
+    transform:
+        translateY(-40px)
+        scale(0.95);
 }
 
 .welcome {
     font-size: 11px;
+
     letter-spacing: 6px;
+
     color: #666;
 
     margin-bottom: 20px;
 }
+
 
 /* BRAND */
 
@@ -117,21 +311,25 @@ main::before {
 
     display: inline-block;
 
-    font-size: clamp(55px, 9vw, 130px);
+    font-size:
+        clamp(55px, 9vw, 130px);
 
     font-weight: 700;
 
     letter-spacing: -6px;
 
-    background: linear-gradient(
-        white,
-        #777
-    );
+    background:
+        linear-gradient(
+            white,
+            #777
+        );
 
     -webkit-background-clip: text;
+
     color: transparent;
 
-    animation: fadeUp 1s ease;
+    animation:
+        fadeUp 1s ease;
 }
 
 .orbit {
@@ -143,7 +341,9 @@ main::before {
     left: -7%;
     top: 30%;
 
-    border: 2px solid rgba(255,255,255,0.7);
+    border:
+        2px solid
+        rgba(255,255,255,0.7);
 
     border-left-color: transparent;
     border-right-color: transparent;
@@ -165,8 +365,10 @@ main::before {
 
     font-size: 30px;
 
-    animation: sparkle 2s infinite;
+    animation:
+        sparkle 2s infinite;
 }
+
 
 /* TAGLINE */
 
@@ -180,9 +382,10 @@ main::before {
     color: #888;
 }
 
-/* BUTTON */
 
-button {
+/* ENTER */
+
+.enter-button {
     margin-top: 35px;
 
     padding: 15px 38px;
@@ -204,14 +407,18 @@ button {
     transition: 0.4s;
 }
 
-button:hover {
+.enter-button:hover {
     background: white;
+
     color: black;
 
     transform: scale(1.06);
 }
 
-/* SCROLL */
+
+/* =========================
+   SCROLL
+========================= */
 
 .scroll {
     position: absolute;
@@ -220,7 +427,8 @@ button:hover {
 
     left: 50%;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     color: #666;
 }
@@ -234,6 +442,7 @@ button:hover {
     border-radius: 20px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -241,7 +450,8 @@ button:hover {
 
     font-size: 15px;
 
-    animation: bounce 1.5s infinite;
+    animation:
+        bounce 1.5s infinite;
 }
 
 .scroll p {
@@ -252,18 +462,279 @@ button:hover {
     margin-top: 10px;
 }
 
-/* ANIMATIONS */
+
+/* =========================
+   SECTIONS
+========================= */
+
+section {
+    border-top: 1px solid #1c1c1c;
+}
+
+
+/* ABOUT */
+
+#about {
+    min-height: 100vh;
+
+    padding: 120px 10%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.section-label {
+    font-size: 11px;
+
+    letter-spacing: 6px;
+
+    color: #666;
+}
+
+#about h2 {
+    font-size:
+        clamp(55px, 8vw, 100px);
+
+    margin: 10px 0;
+
+    letter-spacing: -5px;
+}
+
+.about-text {
+    max-width: 650px;
+
+    color: #888;
+
+    font-size: 20px;
+
+    line-height: 1.7;
+}
+
+.about-line {
+    width: 100px;
+
+    height: 1px;
+
+    background: #555;
+
+    margin-top: 50px;
+}
+
+
+/* =========================
+   PROJECTS
+========================= */
+
+#projects {
+    min-height: 100vh;
+
+    padding: 120px 8%;
+}
+
+#projects h2 {
+    font-size:
+        clamp(45px, 7vw, 90px);
+
+    margin: 10px 0 60px;
+
+    letter-spacing: -4px;
+}
+
+.project-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.project-card {
+    min-height: 300px;
+
+    padding: 30px;
+
+    border: 1px solid #222;
+
+    border-radius: 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    transition:
+        0.4s ease;
+}
+
+.project-card:hover {
+    transform:
+        translateY(-10px);
+
+    border-color: #555;
+
+    background: #0b0b0b;
+}
+
+.project-number {
+    color: #555;
+
+    font-size: 13px;
+}
+
+.project-card h3 {
+    font-size: 28px;
+
+    margin-top: auto;
+}
+
+.project-card p {
+    color: #777;
+
+    line-height: 1.6;
+}
+
+.project-card a {
+    margin-top: 20px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================
+   CONTACT
+========================= */
+
+.contact {
+    min-height: 80vh;
+
+    padding: 120px 10%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.contact h2 {
+    font-size:
+        clamp(55px, 8vw, 100px);
+
+    letter-spacing: -5px;
+
+    margin: 10px 0;
+}
+
+.contact > p:not(.section-label) {
+    color: #777;
+
+    font-size: 18px;
+
+    max-width: 500px;
+
+    line-height: 1.7;
+}
+
+.contact-button {
+    margin-top: 30px;
+
+    width: fit-content;
+
+    padding: 15px 30px;
+
+    border: 1px solid #444;
+
+    border-radius: 30px;
+
+    color: white;
+
+    text-decoration: none;
+
+    letter-spacing: 2px;
+
+    font-size: 12px;
+
+    transition: 0.3s;
+}
+
+.contact-button:hover {
+    background: white;
+
+    color: black;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    border-top: 1px solid #1c1c1c;
+
+    padding: 30px 5%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #555;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+}
+
+
+/* =========================
+   SCROLL ANIMATION
+========================= */
+
+.reveal {
+    opacity: 0;
+
+    transform:
+        translateY(40px);
+
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
 
 @keyframes fadeUp {
 
     from {
         opacity: 0;
-        transform: translateY(30px);
+
+        transform:
+            translateY(30px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+
+        transform:
+            translateY(0);
     }
 
 }
@@ -272,11 +743,13 @@ button:hover {
 
     0%, 100% {
         transform: scale(1);
+
         opacity: 0.6;
     }
 
     50% {
         transform: scale(1.3);
+
         opacity: 1;
     }
 
@@ -285,106 +758,62 @@ button:hover {
 @keyframes bounce {
 
     0%, 100% {
-        transform: translateY(0);
+        transform:
+            translateY(0);
     }
 
     50% {
-        transform: translateY(5px);
+        transform:
+            translateY(5px);
     }
 
 }
 
-.hero {
-    transition: 0.7s ease;
-}
 
-.hero.exit {
-    opacity: 0;
-    transform: translateY(-40px) scale(0.95);
-}
+/* =========================
+   MOBILE
+========================= */
 
-#about {
-    min-height: 100vh;
+@media (max-width: 700px) {
 
-    padding: 120px 10%;
+    .links {
+        display: none;
+    }
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    .menu-button {
+        display: block;
+    }
 
-    border-top: 1px solid #1c1c1c;
-}
+    .brand {
+        font-size: 16vw;
 
-#about h2 {
-    font-size: 70px;
-    margin: 10px 0;
-}
+        letter-spacing: -4px;
+    }
 
-#about > p:last-child {
-    max-width: 600px;
-    color: #888;
-    font-size: 20px;
-    line-height: 1.7;
-}
-#projects {
-    min-height: 100vh;
-    padding: 120px 8%;
+    .tagline {
+        font-size: 9px;
 
-    border-top: 1px solid #1c1c1c;
-}
+        letter-spacing: 4px;
+    }
 
-#projects h2 {
-    font-size: clamp(45px, 7vw, 90px);
-    margin: 10px 0 60px;
-    letter-spacing: -4px;
-}
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
 
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
+    #about,
+    #projects,
+    .contact {
+        padding: 100px 7%;
+    }
 
-.project-card {
-    min-height: 300px;
-    padding: 30px;
+    footer {
+        flex-direction: column;
 
-    border: 1px solid #222;
-    border-radius: 20px;
+        gap: 10px;
+    }
 
-    display: flex;
-    flex-direction: column;
+    .cursor {
+        display: none;
+    }
 
-    transition: 0.4s;
-}
-
-.project-card:hover {
-    transform: translateY(-10px);
-    border-color: #555;
-    background: #0b0b0b;
-}
-
-.project-card span {
-    color: #555;
-    font-size: 13px;
-}
-
-.project-card h3 {
-    font-size: 28px;
-    margin-top: auto;
-}
-
-.project-card p {
-    color: #777;
-    line-height: 1.6;
-}
-
-.project-card a {
-    margin-top: 20px;
-
-    color: white;
-    text-decoration: none;
-
-    font-size: 12px;
-    letter-spacing: 2px;
 }
